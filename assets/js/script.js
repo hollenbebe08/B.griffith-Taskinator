@@ -101,12 +101,39 @@ var createTaskActions = function(taskId) {
 };
 
 var taskButtonHandler= function(event){
-    console.log(event.target);
-    if(event.target.matches(".delete-btn")) {
-    //get the element's task id
-        var taskId= event.target.getAttribute("data-task-id");
+    //get target element from event
+    var targetEl= event.target;
+
+    //edit button was clicked
+    if(targetEl.matches(".edit-btn")) {
+        var taskId= targetEl.getAttribute("data-task-id");
+        editTask(taskId);
+    }
+    //delete button was clicked
+    else if(targetEl.matches(".delete-btn")) {
+        var taskId= targetEl.getAttribute("data-task-id");
         deleteTask(taskId);
     };
+};
+
+//edit task function
+var editTask= function(taskId) {
+
+    //get task list item element
+    var taskSelected= document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    //get content from task name and type
+    var taskName= taskSelected.querySelector("h3.task-name").textContent;
+
+    var taskType= taskSelected.querySelector("span.task-type").textContent;
+
+    //write value of taskname and tasktype to form to be edited
+    document.querySelector("input[name='task-name']").value= taskName;
+    document.querySelector("select[name='task-type']").value= taskType;
+
+    //to show user that the task is being edited
+    formEl.setAttribute("data-task-id", taskId);
+    document.querySelector("#save-task").textContent= "Save Task";
 };
 
 //delete Task function
